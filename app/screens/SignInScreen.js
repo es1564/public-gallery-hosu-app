@@ -6,6 +6,7 @@ import CustomButton from "../components/CustomButton";
 import SignInForm from "../components/SignInForm";
 import SignButtons from "../components/SignButtons";
 import { signIn, signUp } from "../lib/auth";
+import { getUser } from "../lib/users";
 
 function SignInScreen({navigation, route}) {
     const {isSignUp} = route.params ?? {};
@@ -34,6 +35,12 @@ function SignInScreen({navigation, route}) {
 
         try {
             const {user} = isSignUp ? await signUp(info) : await signIn(info);
+            const profile = await getUser(user.uid);
+            if (!profile) {
+                navigation.navigate('Welcome', {uid: user.uid})
+            } else {
+                
+            }
             console.log(user)
         } catch (e) {
             const messages = {
