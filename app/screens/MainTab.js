@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useUserContext } from "../contexts/UserContext";
 
 function MainTab() {
@@ -7,6 +7,13 @@ function MainTab() {
 
     return (
         <View style={styles.block}>
+            {user.photoURL && (
+                <Image
+                    source={{uri: user.photoURL}}
+                    style={{width: 128, height: 128, marginBottom: 16}}
+                    resizeMode="cover"
+                />
+            )}
             <Text style={styles.text}>Hello, {user.displayName}</Text>
         </View>
     )
