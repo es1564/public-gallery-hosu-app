@@ -5,19 +5,23 @@ import CustomButton from "../components/CustomButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { signOut } from "../lib/auth";
 import { createUser } from "../lib/users";
+import { useUserContext } from "../contexts/UserContext";
 
 function SetupProfile() {
     const [displayName, setDisplayName] = useState('');
     const navigation = useNavigation();
+    const {setUser} = useUserContext();
     const {params} = useRoute();
     const {uid} = params || {};
 
     const onSubmit = () => {
-        createUser({
+        const user = {
             id: uid,
             displayName,
             photoURL: null,
-        });
+        }
+        createUser(user);
+        setUser(user);
     }
 
     const onCancel = () => {
