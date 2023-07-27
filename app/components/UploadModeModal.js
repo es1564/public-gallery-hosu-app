@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-function UploadModeModal({visible, onClose }, ref) {
+function UploadModeModal({visible, onClose, onLaunchCamera, onLaunchImageLibrary }, ref) {
     return (
         <Modal
             visible={visible}
@@ -15,6 +15,10 @@ function UploadModeModal({visible, onClose }, ref) {
                     <Pressable
                         style={styles.actionButton}
                         android_ripple={{color: '#eee'}}
+                        onPress={() => {
+                            onLaunchCamera();
+                            onClose();
+                        }}
                     >
                         <Icon
                             name="camera-alt"
@@ -27,6 +31,10 @@ function UploadModeModal({visible, onClose }, ref) {
                     <Pressable
                         style={styles.actionButton}
                         android_ripple={{color: '#eee'}}
+                        onPress={() => {
+                            onLaunchImageLibrary();
+                            onClose();
+                        }}
                     >
                         <Icon
                             name="photo"
