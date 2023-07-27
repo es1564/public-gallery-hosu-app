@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Platform, Text, View, Pressable, Image, ActivityIndicator } from "react-native";
-import BorderenInput from "../components/BorderenInput";
-import CustomButton from "../components/CustomButton";
+import BorderenInput from "./BorderenInput";
+import CustomButton from "./CustomButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { signOut } from "../lib/auth";
 import { createUser } from "../lib/users";
