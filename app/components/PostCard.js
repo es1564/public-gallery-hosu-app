@@ -1,27 +1,28 @@
 import React, { useMemo } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import Avatar from "./Avatar";
+import { useNavigation } from "@react-navigation/native";
 
 function PostCard({user, photoURL, description, createdAt, id}) {
+    const navigation = useNavigation();
+
     const date = useMemo(
         () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
         [createdAt],
     );
 
     const onOpenProfile = () => {
-
+        navigation.navigate('Profile', {
+            userId: user.id,
+            displayName: user.displayName,
+        });
     };
 
     return (
         <View style={styles.block}>
             <View style={[styles.head, styles.paddingBlock]}>
                 <Pressable style={styles.profile} onPress={onOpenProfile}>
-                    <Image 
-                        source={
-                            user.photoURL ? { uri: user.photoURL, } : require('../assets/user.png')
-                        }
-                        resizeMode="cover"
-                        style={styles.avatar}
-                    />
+                    <Avatar source={user.photoURL && {uri: user.photoURL}} />
                     <Text style={styles.displayName}>{user.displayName}</Text>
                 </Pressable>
             </View>
