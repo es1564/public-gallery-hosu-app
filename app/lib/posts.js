@@ -12,7 +12,7 @@ export function createPost({user, photoURL, description}) {
     });
 }
 
-export const PAGE_SIZE = 3;
+export const PAGE_SIZE = 12;
 
 export async function getPosts({userId, mode, id} = {}) {
     let query = postsCollection
