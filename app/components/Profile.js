@@ -1,17 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { getPosts } from "../lib/posts";
+import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { PAGE_SIZE, getNewerPosts, getOlderPosts, getPosts } from "../lib/posts";
 import Avatar from "./Avatar";
 import { getUser } from "../lib/users";
 import PostGridItem from "./PostGridItem";
+import usePosts from "../hooks/usePosts";
 
 function Profile({userId}) {
     const [user, setUser] = useState(null);
-    const [posts, setPosts] = useState(null);
+    const {posts, noMorePost, refreshing, onLoadMore, onRefresh} = usePosts(userId);
 
     useEffect(() => {
         getUser(userId).then(setUser);
-        getPosts({userId}).then(setPosts);
     }, [userId]);
 
     if (!user || !posts) {
@@ -32,6 +32,20 @@ function Profile({userId}) {
                     <Avatar source={user.photoURL && {uri: user.photoURL}} size={128} />
                     <Text style={styles.username}>{user.displayName}</Text>
                 </View>
+            }
+            onEndReached={onLoadMore}
+            onEndReachedThreshold={0.25}
+            ListFooterComponent={
+                !noMorePost && (
+                    <ActivityIndicator
+                        style={styles.bottomSpinner}
+                        size={32}
+                        color="#6200ee"
+                    />
+                )
+            }
+            refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
             }
         />
     )
@@ -56,6 +70,9 @@ const styles = StyleSheet.create({
     spinner: {
         flex: 1,
         justifyContent: 'center',
+    },
+    bottomSpinner: {
+        height: 128,
     }
 });
 
