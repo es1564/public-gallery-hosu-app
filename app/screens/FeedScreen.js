@@ -3,9 +3,17 @@ import { ActivityIndicator, FlatList, Image, RefreshControl, StyleSheet, Text, V
 import PostCard from "../components/PostCard";
 import usePosts from "../hooks/usePosts";
 import events from "../lib/events";
+import SplashScreen from "react-native-splash-screen";
 
 function FeedScreen() {
     const {posts, noMorePost, refreshing, onLoadMore, onRefresh, removePost} = usePosts();
+
+    const postsReady = posts != null;
+    useEffect(() => {
+        if (postsReady) {
+            SplashScreen.hide();
+        }
+    }, [postsReady]);
 
     useEffect(() => {
         events.addListener('refresh', onRefresh);
