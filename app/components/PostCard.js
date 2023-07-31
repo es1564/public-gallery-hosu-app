@@ -2,11 +2,21 @@ import React, { useMemo } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Avatar from "./Avatar";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useUserContext } from "../contexts/UserContext";
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import usePostActions from "../hooks/usePostActions";
+import ActionSheetModal from "./ActionSheetModal";
 
 function PostCard({user, photoURL, description, createdAt, id}) {
     const routeNames = useNavigationState((state) => state.routeNames);
-    console.log('routeNames  >>   ',routeNames)
+    // console.log('routeNames  >>   ',routeNames)
     const navigation = useNavigation();
+    const {user: me} = useUserContext();
+    const isMyPost = me.id === user.id;
+    const {isSelecting, onPressMore, onClose, actions} = usePostActions({
+        id,
+        description,
+    });
 
     const date = useMemo(
         () => (createdAt ? new Date(createdAt._seconds * 1000) : new Date()),
@@ -25,24 +35,35 @@ function PostCard({user, photoURL, description, createdAt, id}) {
     };
 
     return (
-        <View style={styles.block}>
-            <View style={[styles.head, styles.paddingBlock]}>
-                <Pressable style={styles.profile} onPress={onOpenProfile}>
-                    <Avatar source={user.photoURL && {uri: user.photoURL}} />
-                    <Text style={styles.displayName}>{user.displayName}</Text>
-                </Pressable>
+        <>
+            <View style={styles.block}>
+                <View style={[styles.head, styles.paddingBlock]}>
+                    <Pressable style={styles.profile} onPress={onOpenProfile}>
+                        <Avatar source={user.photoURL && { uri: user.photoURL }} />
+                        <Text style={styles.displayName}>{user.displayName}</Text>
+                    </Pressable>
+                    {isMyPost && (
+                        <Pressable hitSlop={8} onPress={onPressMore}>
+                            <Icon name="more-vert" size={20} />
+                        </Pressable>
+                    )}
+                </View>
+                <Image
+                    source={{ uri: photoURL }}
+                    style={styles.image}
+                    resizeMethod="resize"
+                    resizeMode="cover" />
+                <View style={styles.paddingBlock}>
+                    <Text style={styles.description}>{description}</Text>
+                    <Text date={date} style={styles.date}>{date.toLocaleString()}</Text>
+                </View>
             </View>
-            <Image 
-                source={{uri: photoURL}}
-                style={styles.image}
-                resizeMethod="resize"
-                resizeMode="cover"
+            <ActionSheetModal 
+                visible={isSelecting}
+                actions={actions}
+                onClose={onClose}
             />
-            <View style={styles.paddingBlock}>
-                <Text style={styles.description}>{description}</Text>
-                <Text date={date} style={styles.date}>{date.toLocaleString()}</Text>
-            </View>
-        </View>
+        </>
     )
 }
 
