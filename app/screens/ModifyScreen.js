@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput } fro
 import PostCard from "../components/PostCard";
 import IconRightButton from "../components/IconRightButton";
 import { updatePost } from "../lib/posts";
+import events from "../lib/events";
 
 
 function ModifyScreen() {
@@ -15,6 +16,10 @@ function ModifyScreen() {
         await updatePost({
             id: params.id,
             description: description,
+        });
+        events.emit('updatePost', {
+            postId: params.id,
+            description,
         });
         navigation.pop();
     }, [navigation, params.id, description]);
