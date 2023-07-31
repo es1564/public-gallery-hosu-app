@@ -6,9 +6,10 @@ import { useNavigation } from "@react-navigation/native";
 function PostGridItem({post}) {
     const demensions = useWindowDimensions();
     const size = (demensions.width - 3) / 3;
+    const navigation = useNavigation();
 
     const onPress = () => {
-
+        navigation.navigate('Post', {post});
     }
     return (
         <Pressable
