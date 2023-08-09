@@ -64,3 +64,10 @@ yarn-error.log
 
 # testing
 /coverage
+
+
+# Ignore google-services.json
+google-services.json
+
+
+/android/gradle.properties

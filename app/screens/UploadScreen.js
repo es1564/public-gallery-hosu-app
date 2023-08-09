@@ -69,7 +69,7 @@ function UploadScreen() {
         }
 
         const photoURL = await reference.getDownloadURL();
-        await createPost({description, photoURL, user});
+        await createPost({user, photoURL, description});
 
         events.emit('refresh');
         
