@@ -69,5 +69,5 @@ yarn-error.log
 # Ignore google-services.json
 google-services.json
 
-
+# Ignore gradle.properties
 /android/gradle.properties
