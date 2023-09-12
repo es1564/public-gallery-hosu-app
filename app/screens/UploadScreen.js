@@ -41,19 +41,8 @@ function UploadScreen() {
         }).start();
     }, [isKeyboardOpen, width, animation]);
 
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => <IconRightButton onPress={onSubmit} name="send" />,
-        });
-    }, [navigation, onSubmit]);
-
     
-    useEffect(() => {
-        console.log('descriptiondescription >>>>>> ',description)
-    }, [description]);
-
-
-    const onSubmit = useCallback(async () => {
+    const onSubmit = useCallback(async() => {
         console.log('description >>> ', description)
         navigation.pop();
         const asset = res.assets[0];
@@ -74,6 +63,15 @@ function UploadScreen() {
         events.emit('refresh');
         
     },[res, user, description, navigation]);
+
+
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => <IconRightButton onPress={onSubmit} name="send" />,
+        });
+    }, [navigation, onSubmit]);
+
 
     return (
         <KeyboardAvoidingView
